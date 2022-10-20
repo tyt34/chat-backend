@@ -1,6 +1,5 @@
-// Создание сервера
+const fetch = require("node-fetch")
 const server = require('http').createServer()
-// Берём API socket.io
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
@@ -31,18 +30,23 @@ io.on('connection', (socket) => {
     let secondtName = arrSecondName[getRandomInt(arrSecondName.length)]
     console.log(' f: ', firstName)
     console.log(' s: ', secondtName)
-    users.push({
-      name: firstName + ' ' + secondtName,
-      id: socket.id
+    fetch('https://random.imagecdn.app/100/100')
+    .then( (res) => {
+      console.log(' res: ', res)
+      let obj = {
+        name: firstName + ' ' + secondtName,
+        id: socket.id,
+        img: res.url
+      }
+      users.push(obj)
+      console.log(' users: ', users)
+      socket.emit("give a name", obj)
+      io.emit('add new user', obj)
+      socket.emit("now list users", users)
     })
-    console.log(' users: ', users)
-
-    socket.emit("give a name", firstName + ' ' + secondtName)
-    io.emit('add new user', {
-      name: firstName + ' ' + secondtName,
-      id: socket.id
+    .catch( (er) => {
+      console.log(' er: ', er)
     })
-    socket.emit("now list users", users)
   })
 
   socket.on('disconnect', () => {
