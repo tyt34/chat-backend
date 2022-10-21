@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
     console.log(' s: ', secondtName)
     fetch('https://random.imagecdn.app/100/100')
     .then( (res) => {
-      console.log(' res: ', res)
+      //console.log(' res: ', res)
       let obj = {
         name: firstName + ' ' + secondtName,
         id: socket.id,
@@ -45,7 +45,20 @@ io.on('connection', (socket) => {
       socket.emit("now list users", users)
     })
     .catch( (er) => {
+      /**
+       * заметил, что может быть какая то редка и непонятная ошибка с данным api
+       */
       console.log(' er: ', er)
+      let obj = {
+        name: firstName + ' ' + secondtName,
+        id: socket.id,
+        img: 'default'
+      }
+      users.push(obj)
+      console.log(' users: ', users)
+      socket.emit("give a name", obj)
+      io.emit('add new user', obj)
+      socket.emit("now list users", users)
     })
   })
 
@@ -64,6 +77,24 @@ io.on('connection', (socket) => {
     io.emit('remove user', idElRemove)
     console.log(' users: ', users)
   })
+
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg)
+    let nameUser 
+    let imgUser
+    users.map( (user) => {
+      if (user.id === socket.id) {
+        nameUser = user.name
+        imgUser = user.img
+      }
+    })
+    io.emit('message for all', {
+      id: socket.id,
+      message: msg,
+      name: nameUser,
+      img: imgUser
+    })
+  });
 })
  
 // Назначаем порт для сервера
