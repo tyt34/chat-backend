@@ -17,7 +17,7 @@ const io = require('socket.io')(server, {
 /**
  * Список пользователей, которые сейчас online
  */
-const users = []
+const users = new Map()
 
 io.on(connect, (socket) => {
   /**
@@ -33,10 +33,10 @@ io.on(connect, (socket) => {
         id: socket.id,
         avatar: res.url
       }
-      users.push(obj)
+      users.set(socket.id, obj)
       socket.emit(giveName, obj)
       io.emit(getNewUser, obj)
-      socket.emit(giveAllUsers, users)
+      socket.emit(giveAllUsers, [...users.values()])
     })
     .catch((er) => {
       /**
@@ -48,10 +48,10 @@ io.on(connect, (socket) => {
         id: socket.id,
         avatar: defaultAvatar
       }
-      users.push(obj)
+      users.set(socket.id, obj)
       socket.emit(giveName, obj)
       io.emit(getNewUser, obj)
-      socket.emit(giveAllUsers, users)
+      socket.emit(giveAllUsers, [...users.values()])
     })
   })
 
@@ -59,36 +59,22 @@ io.on(connect, (socket) => {
    * Отправка сообщения о пользователе, который отключился
    */
   socket.on(disconnect, () => {
-    let indexElRemove
-    let idElRemove
-    users.map((el, num) => {
-      if (el.id === socket.id) {
-        indexElRemove = num
-        idElRemove = socket.id 
-      }
-    })
-    users.splice(indexElRemove, 1)
-    io.emit(getOldUser, idElRemove)
+    if (users.get(socket.id)) {
+      io.emit(getOldUser, users.get(socket.id).id)
+      users.delete(socket.id)
+    }
   })
 
   /**
    * Получение сообщений
    */
   socket.on(sendChatMessage, (msg) => {
-    let nameUser 
-    let imgUser
-    users.map((user) => {
-      if (user.id === socket.id) {
-        nameUser = user.name
-        imgUser = user.avatar
-      }
-    })
     io.emit(getNewMessage, {
       id: socket.id,
       message: msg.message,
-      avatar: imgUser,
+      avatar: users.get(socket.id).avatar,
       imageFile: msg.imageFile,
-      name: nameUser
+      name: users.get(socket.id).name
     })
   })
 })
