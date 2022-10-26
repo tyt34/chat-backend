@@ -1,14 +1,16 @@
 /**
  * socket io
  */
-const sendChatMessage = 'chat message'
-const giveName = 'give a name'
-const giveAllUsers = 'now list users'
-const getNewUser = 'add new user'
-const getOldUser = 'remove user'
-const getNewMessage = 'message for all'
-const disconnect = 'disconnect'
-const connect = 'connection'
+const socketOptions = {
+  sendChatMessage: 'chat message',
+  giveName: 'give a name',
+  giveAllUsers: 'now list users',
+  getNewUser: 'add new user',
+  getOldUser: 'remove user',
+  getNewMessage: 'message for all',
+  disconnect: 'disconnect',
+  connect: 'connection'
+}
 
 /**
  * Other
@@ -20,17 +22,10 @@ const urlApiImage = 'https://random.imagecdn.app/100/100'
 const beginTextForEr = ' Erorr in get image: '
 
 module.exports = {
-  sendChatMessage,
-  giveName,
-  giveAllUsers,
-  getNewUser,
-  getOldUser,
-  getNewMessage,
-  disconnect,
   defaultAvatar,
   arrFirstName,
   arrSecondName,
-  connect,
   urlApiImage,
-  beginTextForEr
+  beginTextForEr,
+  socketOptions
 }
