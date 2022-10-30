@@ -15,14 +15,12 @@ const socketOptions = {
 /**
  * Other
  */
-const defaultAvatar = 'default'
 const arrFirstName = ['Радиоактивный', 'Непомнящий', 'Большой', 'Средний', 'Маленький', 'Оранжевый', 'Ежовый', 'Ёжовый']
 const arrSecondName = ['Медведь', 'Человек', 'Паук', 'Томат', 'Кетчуп', 'Урюпинец', 'Еж', 'Ёж']
 const urlApiImage = 'https://random.imagecdn.app/100/100'
 const beginTextForEr = ' Erorr in get image: '
 
 module.exports = {
-  defaultAvatar,
   arrFirstName,
   arrSecondName,
   urlApiImage,

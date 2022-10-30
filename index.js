@@ -2,7 +2,7 @@ const {
   socketOptions
 } = require('./constants.js')
 const {
-  socketGiveName, socketDisconnect
+  socketGiveName, socketDisconnect, socketSendChatMessage
 } = require('./socket-functions.js')
 const server = require('http').createServer()
 const io = require('socket.io')(server, {
@@ -10,6 +10,10 @@ const io = require('socket.io')(server, {
     origin: '*',
   }
 }) 
+
+const port = 3001
+
+console.log(' work on port: ', port)
 
 /**
  * Список пользователей, которые сейчас online
@@ -39,4 +43,4 @@ io.on(socketOptions.connect, (socket) => {
   })
 })
  
-server.listen(3000)
+server.listen(port)
