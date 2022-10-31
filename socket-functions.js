@@ -30,7 +30,8 @@ const socketGiveName = (socket, users, io) => {
   })
   .catch((er) => {
     /**
-     * заметил, что может быть какая то редка и непонятная ошибка с данным api
+     * заметил, что может возникнуть редкая ошибка 
+     * с получением изображения с помощью данного api
      */
     console.log(beginTextForEr, er)
     let obj = {
@@ -53,14 +54,6 @@ const socketDisconnect = (socket, users, io) => {
 }
 
 const socketSendChatMessage = (socket, users, io, msg) => {
-  console.log(' u: ', users)
-  console.log(' send: ', {
-    id: socket.id,
-    message: msg.message,
-    avatar: users.get(socket.id).avatar,
-    imageFile: msg.imageFile,
-    name: users.get(socket.id).name
-  })
   io.emit(socketOptions.getNewMessage, {
     id: socket.id,
     message: msg.message,
