@@ -36,7 +36,7 @@ io.on(socketOptions.connect, (socket) => {
   })
 
   /**
-   * Получение сообщений
+   * Получение сообщения и отправка его всем пользователям чата
    */
   socket.on(socketOptions.sendChatMessage, (msg) => {
     socketSendChatMessage(socket, users, io, msg)
