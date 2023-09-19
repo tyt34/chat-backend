@@ -2,28 +2,52 @@
  * socket io
  */
 const socketOptions = {
-  sendChatMessage: 'chat message',
-  giveName: 'give a name',
-  giveAllUsers: 'now list users',
+  addOldUser: 'add old user',
+  connect: 'connection',
+  disconnect: 'disconnect',
+  getNewMessage: 'message for all',
   getNewUser: 'add new user',
   getOldUser: 'remove user',
-  getNewMessage: 'message for all',
-  disconnect: 'disconnect',
-  connect: 'connection'
+  giveAllUsers: 'now list users',
+  giveName: 'give a name',
+  sendChatMessage: 'chat message'
 }
 
 /**
  * Other
  */
-const arrFirstName = ['Радиоактивный', 'Непомнящий', 'Большой', 'Средний', 'Маленький', 'Оранжевый', 'Ежовый', 'Ёжовый']
-const arrSecondName = ['Медведь', 'Человек', 'Паук', 'Томат', 'Кетчуп', 'Урюпинец', 'Еж', 'Ёж']
-const urlApiImage = 'https://random.imagecdn.app/100/100'
+const arrFirstName = [
+  'Ёжовый',
+  'Большой',
+  'Ежовый',
+  'Маленький',
+  'Непомнящий',
+  'Оранжевый',
+  'Радиоактивный',
+  'Средний'
+]
+const arrSecondName = [
+  'Ёж',
+  'Еж',
+  'Кетчуп',
+  'Медведь',
+  'Паук',
+  'Томат',
+  'Урюпинец',
+  'Человек'
+]
+
 const beginTextForEr = ' Erorr in get image: '
+const textBase64 = 'data:image/png;base64,'
+const urlApiImageFirst = 'https://loremflickr.com/100/100'
+const urlApiImageSecond = 'https://random.imagecdn.app/100/100'
 
 module.exports = {
   arrFirstName,
   arrSecondName,
-  urlApiImage,
   beginTextForEr,
-  socketOptions
+  socketOptions,
+  textBase64,
+  urlApiImageFirst,
+  urlApiImageSecond
 }

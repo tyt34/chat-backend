@@ -1,49 +1,45 @@
-const fetch = require('node-fetch')
 const {
-  getRandomInt
-} = require('./utils.js')
-const {
-  arrFirstName, 
-  arrSecondName, 
-  urlApiImage, 
-  beginTextForEr, 
-  socketOptions
+  arrFirstName,
+  arrSecondName,
+  beginTextForEr,
+  socketOptions,
+  textBase64,
+  urlApiImageFirst,
+  urlApiImageSecond
 } = require('./constants.js')
+const { getRandomInt, getImgFromFetch } = require('./utils.js')
 const fs = require('fs')
 const defAvaImg = fs.readFileSync('./default-avatar.png')
-const defAvaBase64 = 'data:image/png;base64,'+Buffer.from(defAvaImg).toString('base64')
+const defAvaBase64 =
+  textBase64 + Buffer.from(defAvaImg).toString('base64')
 
-const socketGiveName = (socket, users, io) => {
+const socketGiveName = async (socket, users, io) => {
   let firstName = arrFirstName[getRandomInt(arrFirstName.length)]
   let secondtName = arrSecondName[getRandomInt(arrSecondName.length)]
-  fetch(urlApiImage)
-  .then((res) => {
-    let obj = {
-      name: firstName + ' ' + secondtName,
-      id: socket.id,
-      avatar: res.url
+
+  let obj = {
+    name: firstName + ' ' + secondtName,
+    id: socket.id,
+    avatar: defAvaBase64
+  }
+
+  try {
+    const result = await getImgFromFetch(urlApiImageFirst)
+    obj.avatar = result
+  } catch (error) {
+    console.error(beginTextForEr, error)
+    try {
+      const result = await getImgFromFetch(urlApiImageSecond)
+      obj.avatar = result
+    } catch (error) {
+      console.error(beginTextForEr, error)
     }
-    users.set(socket.id, obj)
-    socket.emit(socketOptions.giveName, obj)
-    io.emit(socketOptions.getNewUser, obj)
-    socket.emit(socketOptions.giveAllUsers, [...users.values()])
-  })
-  .catch((er) => {
-    /**
-     * заметил, что может возникнуть редкая ошибка 
-     * с получением изображения с помощью данного api
-     */
-    console.log(beginTextForEr, er)
-    let obj = {
-      name: firstName + ' ' + secondtName,
-      id: socket.id,
-      avatar: defAvaBase64
-    }
-    users.set(socket.id, obj)
-    socket.emit(socketOptions.giveName, obj)
-    io.emit(socketOptions.getNewUser, obj)
-    socket.emit(socketOptions.giveAllUsers, [...users.values()])
-  })
+  }
+
+  users.set(socket.id, obj)
+  socket.emit(socketOptions.giveName, obj)
+  io.emit(socketOptions.getNewUser, obj)
+  socket.emit(socketOptions.giveAllUsers, [...users.values()])
 }
 
 const socketDisconnect = (socket, users, io) => {
@@ -63,8 +59,20 @@ const socketSendChatMessage = (socket, users, io, msg) => {
   })
 }
 
+const socketAddOldUser = (socket, users, io, user) => {
+  users.set(socket.id, user)
+  io.emit(socketOptions.addOldUser, socket.id)
+  io.emit(socketOptions.getNewUser, user)
+}
+
+const socketSendAllUsers = (users, io) => {
+  io.emit(socketOptions.giveAllUsers, [...users.values()])
+}
+
 module.exports = {
-  socketGiveName,
+  socketAddOldUser,
   socketDisconnect,
+  socketGiveName,
+  socketSendAllUsers,
   socketSendChatMessage
 }

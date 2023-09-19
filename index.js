@@ -1,19 +1,23 @@
 const {
-  socketOptions
-} = require('./constants.js')
-const {
-  socketGiveName, socketDisconnect, socketSendChatMessage
+  socketAddOldUser,
+  socketDisconnect,
+  socketGiveName,
+  socketSendAllUsers,
+  socketSendChatMessage
 } = require('./socket-functions.js')
 const server = require('http').createServer()
-const io = require('socket.io')(server, {
+const { Server } = require('socket.io')
+const { socketOptions } = require('./constants.js')
+
+const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: '*'
   }
-}) 
+})
 
 const port = 3001
 
-console.log(' work on port: ', port)
+console.info(' Work on port: ', port)
 
 /**
  * Список пользователей, которые сейчас online
@@ -26,7 +30,7 @@ io.on(socketOptions.connect, (socket) => {
    */
   socket.on(socketOptions.giveName, () => {
     socketGiveName(socket, users, io)
-  }) 
+  })
 
   /**
    * Отправка сообщения о пользователе, который отключился
@@ -41,6 +45,14 @@ io.on(socketOptions.connect, (socket) => {
   socket.on(socketOptions.sendChatMessage, (msg) => {
     socketSendChatMessage(socket, users, io, msg)
   })
+
+  socket.on(socketOptions.addOldUser, (user) => {
+    socketAddOldUser(socket, users, io, user)
+  })
+
+  socket.on(socketOptions.giveAllUsers, () => {
+    socketSendAllUsers(users, io)
+  })
 })
- 
+
 server.listen(port)

@@ -1,0 +1,9 @@
+README.md
+/node_modules
+/public
+/.vscode
+.gitignore
+.prettierignore
+.prettierrc.json
+package-lock.json
+package.json
