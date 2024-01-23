@@ -15,7 +15,8 @@ const io = new Server(server, {
   }
 })
 
-const port = 3001
+// const port = 3001 // deploy port
+const port = 3001 // test port
 
 console.info(' Work on port: ', port)
 

@@ -9,7 +9,13 @@ const {
 } = require('./constants.js')
 const { getRandomInt, getImgFromFetch } = require('./utils.js')
 const fs = require('fs')
-const defAvaImg = fs.readFileSync('./default-avatar.png')
+const defAvaImg = fs.readFileSync('./default-avatar.png') // test img
+// deploy img
+/*
+const defAvaImg =
+  'https://cdn.glitch.global/82cd4e3d-c82e-43a6-b002-a39a52ee0763/default-avatar.png?v=1667393767117'
+*/
+
 const defAvaBase64 =
   textBase64 + Buffer.from(defAvaImg).toString('base64')
 
