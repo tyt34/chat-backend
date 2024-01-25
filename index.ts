@@ -1,21 +1,22 @@
-const {
+import { socketOptions } from './constants'
+import {
   socketAddOldUser,
   socketDisconnect,
   socketGiveName,
   socketSendAllUsers,
-  socketSendChatMessage
-} = require('./socket-functions.js')
+  socketSendChatMessage,
+} from './socket-functions'
+import { MessageType } from './types'
 const server = require('http').createServer()
 const { Server } = require('socket.io')
-const { socketOptions } = require('./constants.js')
 
 const io = new Server(server, {
   cors: {
-    origin: '*'
-  }
+    origin: '*',
+  },
 })
 
-// const port = 3001 // deploy port
+// const port = 3000 // deploy port
 const port = 3001 // test port
 
 console.info(' Work on port: ', port)
@@ -43,7 +44,7 @@ io.on(socketOptions.connect, (socket) => {
   /**
    * Получение сообщения и отправка его всем пользователям чата
    */
-  socket.on(socketOptions.sendChatMessage, (msg) => {
+  socket.on(socketOptions.sendChatMessage, (msg: MessageType) => {
     socketSendChatMessage(socket, users, io, msg)
   })
 

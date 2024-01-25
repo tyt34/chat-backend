@@ -1,13 +1,13 @@
-const {
+import {
   arrFirstName,
   arrSecondName,
   beginTextForEr,
   socketOptions,
   textBase64,
   urlApiImageFirst,
-  urlApiImageSecond
-} = require('./constants.js')
-const { getRandomInt, getImgFromFetch } = require('./utils.js')
+  urlApiImageSecond,
+} from './constants'
+import { getImgFromFetch, getRandomInt } from './utils'
 const fs = require('fs')
 const defAvaImg = fs.readFileSync('./default-avatar.png') // test img
 // deploy img
@@ -16,17 +16,16 @@ const defAvaImg =
   'https://cdn.glitch.global/82cd4e3d-c82e-43a6-b002-a39a52ee0763/default-avatar.png?v=1667393767117'
 */
 
-const defAvaBase64 =
-  textBase64 + Buffer.from(defAvaImg).toString('base64')
+const defAvaBase64 = textBase64 + Buffer.from(defAvaImg).toString('base64')
 
-const socketGiveName = async (socket, users, io) => {
+export const socketGiveName = async (socket, users, io) => {
   let firstName = arrFirstName[getRandomInt(arrFirstName.length)]
   let secondtName = arrSecondName[getRandomInt(arrSecondName.length)]
 
   let obj = {
     name: firstName + ' ' + secondtName,
     id: socket.id,
-    avatar: defAvaBase64
+    avatar: defAvaBase64,
   }
 
   try {
@@ -45,40 +44,44 @@ const socketGiveName = async (socket, users, io) => {
   users.set(socket.id, obj)
   socket.emit(socketOptions.giveName, obj)
   io.emit(socketOptions.getNewUser, obj)
-  socket.emit(socketOptions.giveAllUsers, [...users.values()])
+
+  const usersArray = Array.from(users.values())
+
+  socket.emit(socketOptions.giveAllUsers, usersArray)
 }
 
-const socketDisconnect = (socket, users, io) => {
+export const socketDisconnect = (socket, users, io) => {
   if (users.get(socket.id)) {
     io.emit(socketOptions.getOldUser, users.get(socket.id).id)
     users.delete(socket.id)
   }
 }
 
-const socketSendChatMessage = (socket, users, io, msg) => {
-  io.emit(socketOptions.getNewMessage, {
-    id: socket.id,
+export const socketSendChatMessage = (socket, users, io, msg) => {
+  const userSending = users.get(socket.id)
+
+  const message = {
+    id: userSending.id,
     message: msg.message,
-    avatar: users.get(socket.id).avatar,
+    avatar: userSending.avatar,
     imageFile: msg.imageFile,
-    name: users.get(socket.id).name
-  })
+    name: userSending.name,
+  }
+
+  console.info({ message })
+
+  io.emit(socketOptions.getNewMessage, message)
 }
 
-const socketAddOldUser = (socket, users, io, user) => {
-  users.set(socket.id, user)
-  io.emit(socketOptions.addOldUser, socket.id)
+export const socketAddOldUser = (socket, users, io, user) => {
+  const { id } = socket
+  users.set(id, user)
+  io.emit(socketOptions.addOldUser, id)
   io.emit(socketOptions.getNewUser, user)
 }
 
-const socketSendAllUsers = (users, io) => {
-  io.emit(socketOptions.giveAllUsers, [...users.values()])
-}
+export const socketSendAllUsers = (users, io) => {
+  const usersArray = Array.from(users.values())
 
-module.exports = {
-  socketAddOldUser,
-  socketDisconnect,
-  socketGiveName,
-  socketSendAllUsers,
-  socketSendChatMessage
+  io.emit(socketOptions.giveAllUsers, usersArray)
 }

@@ -1,7 +1,7 @@
 /**
  * socket io
  */
-const socketOptions = {
+export const socketOptions = {
   addOldUser: 'add old user',
   connect: 'connection',
   disconnect: 'disconnect',
@@ -16,7 +16,7 @@ const socketOptions = {
 /**
  * Other
  */
-const arrFirstName = [
+export const arrFirstName = [
   'Ёжовый',
   'Большой',
   'Ежовый',
@@ -26,7 +26,8 @@ const arrFirstName = [
   'Радиоактивный',
   'Средний'
 ]
-const arrSecondName = [
+
+export const arrSecondName = [
   'Ёж',
   'Еж',
   'Кетчуп',
@@ -37,17 +38,7 @@ const arrSecondName = [
   'Человек'
 ]
 
-const beginTextForEr = ' Erorr in get image: '
-const textBase64 = 'data:image/png;base64,'
-const urlApiImageFirst = 'https://loremflickr.com/100/100'
-const urlApiImageSecond = 'https://random.imagecdn.app/100/100'
-
-module.exports = {
-  arrFirstName,
-  arrSecondName,
-  beginTextForEr,
-  socketOptions,
-  textBase64,
-  urlApiImageFirst,
-  urlApiImageSecond
-}
+export const beginTextForEr = ' Erorr in get image: '
+export const textBase64 = 'data:image/png;base64,'
+export const urlApiImageFirst = 'https://loremflickr.com/100/100'
+export const urlApiImageSecond = 'https://random.imagecdn.app/100/100'

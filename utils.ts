@@ -6,16 +6,11 @@ const { default: fetch } = require('node-fetch')
  * @param max
  * @returns
  */
-const getRandomInt = (max) => {
+export const getRandomInt = (max) => {
   return Math.floor(Math.random() * max)
 }
 
-const getImgFromFetch = async (url) => {
+export const getImgFromFetch = async (url) => {
   const data = await fetch(url)
   return data.url
-}
-
-module.exports = {
-  getImgFromFetch,
-  getRandomInt
 }

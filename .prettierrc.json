@@ -1,15 +1,11 @@
 {
-  "printWidth": 72,
+  "trailingComma": "all",
   "tabWidth": 2,
-  "useTabs": false,
   "semi": false,
   "singleQuote": true,
-  "quoteProps": "as-needed",
-  "trailingComma": "none",
+  "printWidth": 80,
   "bracketSpacing": true,
-  "bracketSameLine": false,
-  "arrowParens": "always",
-  "proseWrap": "always",
-  "htmlWhitespaceSensitivity": "ignore",
-  "singleAttributePerLine": true
+  "useTabs": false,
+  "quoteProps": "as-needed",
+  "arrowParens": "always"
 }

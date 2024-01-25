@@ -2,11 +2,11 @@
   "name": "chat-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "dev": "npx nodemon index.js",
+    "dev": "npx nodemon index.ts",
     "pret": "npx prettier --write .",
-    "start": "node index.js",
+    "start": "ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +14,15 @@
   "dependencies": {
     "express": "^4.18.2",
     "node-fetch": "^2.6.7",
-    "socket.io": "^4.5.3"
+    "socket.io": "^4.5.3",
+    "fs": "^0.0.1-security",
+    "nodemon": "^2.0.21",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "prettier": "^3.0.3",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.2.2"
   }
 }
